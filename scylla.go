@@ -457,6 +457,7 @@ func (p *scyllaConnPicker) shardOf(token int64Token) int {
 }
 
 func (p *scyllaConnPicker) Put(conn *Conn) {
+	fmt.Println(p)
 	var (
 		nrShards = conn.scyllaSupported.nrShards
 		shard    = conn.scyllaSupported.shard
