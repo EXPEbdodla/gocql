@@ -665,7 +665,7 @@ type scyllaDialer struct {
 	cfg       *ClusterConfig
 }
 
-const scyllaShardAwarePortFallbackDuration time.Duration = 5 * time.Minute
+const scyllaShardAwarePortFallbackDuration time.Duration = 1 * time.Minute
 
 func (sd *scyllaDialer) DialHost(ctx context.Context, host *HostInfo) (*DialedHost, error) {
 	ip := host.ConnectAddress()
