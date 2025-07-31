@@ -480,7 +480,8 @@ func (p *scyllaConnPicker) Put(conn *Conn) {
 			// the shard-aware port to return connection to the shard
 			// that we requested. Fall back to non-shard-aware port for some time.
 			p.logger.Printf(
-				"scylla: %s connection to shard-aware address %s resulted in wrong shard being assigned; please check that you are not behind a NAT or AddressTranslater which changes source ports; falling back to non-shard-aware port for %v",
+				"scylla: For Shard %s:  %s connection to shard-aware address %s resulted in wrong shard being assigned; please check that you are not behind a NAT or AddressTranslater which changes source ports; falling back to non-shard-aware port for %v",
+				shard,
 				p.address,
 				p.shardAwareAddress,
 				scyllaShardAwarePortFallbackDuration,
