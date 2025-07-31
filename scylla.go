@@ -471,7 +471,7 @@ func (p *scyllaConnPicker) Put(conn *Conn) {
 	}
 
 	if c := p.conns[shard]; c != nil {
-		p.logger.Printf("Old Conn: %s: %s: %s: %s: %s: %s: %s", p.address, conn.addr, p.shardAwareAddress, p.conns[shard].addr, shard, nrShards, conn.conn)
+		p.logger.Printf("Old Conn: %s: %d/%d %s: %s: %s: %s", p.address, shard, nrShards, conn.addr, p.shardAwareAddress, p.conns[shard].addr, conn.conn)
 		if conn.addr == p.shardAwareAddress {
 			// A connection made to the shard-aware port resulted in duplicate
 			// connection to the same shard being made. Because this is never
@@ -506,7 +506,7 @@ func (p *scyllaConnPicker) Put(conn *Conn) {
 			p.logger.Printf("scylla: %s put shard %d connection total: %d missing: %d", p.address, shard, p.nrConns, p.nrShards-p.nrConns)
 		}
 
-		p.logger.Printf("New Conn: %s: %s: %s: %s: %s: %s: %s", p.address, conn.addr, p.shardAwareAddress, p.conns[shard].addr, shard, nrShards, conn.conn)
+		p.logger.Printf("New Conn: %s: %d/%d %s: %s: %s: %s", p.address, shard, nrShards, conn.addr, p.shardAwareAddress, p.conns[shard].addr, conn.conn)
 	}
 
 	if p.shouldCloseExcessConns() {
