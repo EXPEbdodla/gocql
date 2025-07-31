@@ -500,17 +500,16 @@ func (p *scyllaConnPicker) Put(conn *Conn) {
 			}
 		}
 	} else {
-		if conn.addr == p.shardAwareAddress {
-			p.conns[shard] = conn
-			p.nrConns++
-			if gocqlDebug {
-				p.logger.Printf("scylla: %s put shard %d connection total: %d missing: %d", p.address, shard, p.nrConns, p.nrShards-p.nrConns)
-			}
+		p.conns[shard] = conn
+		p.nrConns++
+		if gocqlDebug {
+			p.logger.Printf("scylla: %s put shard %d connection total: %d missing: %d", p.address, shard, p.nrConns, p.nrShards-p.nrConns)
+		}
 
-			p.logger.Printf("New Conn: %s: %d/%d %s: %s: %s: %s", p.address, shard, nrShards, conn.addr, p.shardAwareAddress, p.conns[shard].addr, conn.conn)
-		} else {
-			p.logger.Printf("Wrong Conn: %s: %d/%d %s: %s: %s: %s", p.address, shard, nrShards, conn.addr, p.shardAwareAddress, nil, conn.conn)
-			//closeConns(conn)
+		p.logger.Printf("New Conn: %s: %d/%d %s: %s: %s: %s", p.address, shard, nrShards, conn.addr, p.shardAwareAddress, p.conns[shard].addr, conn.conn)
+
+		if conn.addr != p.shardAwareAddress {
+			p.logger.Printf("Wrong Conn: %s: %d/%d %s: %s: %s: %s", p.address, shard, nrShards, conn.addr, p.shardAwareAddress, p.conns[shard].addr, conn.conn)
 		}
 	}
 
