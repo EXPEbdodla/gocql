@@ -504,6 +504,7 @@ func (p *scyllaConnPicker) Put(conn *Conn) {
 		if gocqlDebug {
 			p.logger.Printf("scylla: %s put shard %d connection total: %d missing: %d", p.address, shard, p.nrConns, p.nrShards-p.nrConns)
 		}
+
 		p.logger.Printf("%s: %s: %s: %s: %s: %s: %s", p.address, conn.addr, p.shardAwareAddress, p.conns[shard].addr, shard, nrShards, conn.conn)
 	}
 
