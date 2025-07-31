@@ -471,6 +471,7 @@ func (p *scyllaConnPicker) Put(conn *Conn) {
 	}
 
 	if c := p.conns[shard]; c != nil {
+		p.logger.Printf("%s: %s: %s: %s: %s: %s: %s", p.address, conn.addr, p.shardAwareAddress, p.conns[shard].addr, shard, nrShards, conn.conn)
 		if conn.addr == p.shardAwareAddress {
 			// A connection made to the shard-aware port resulted in duplicate
 			// connection to the same shard being made. Because this is never
@@ -503,6 +504,7 @@ func (p *scyllaConnPicker) Put(conn *Conn) {
 		if gocqlDebug {
 			p.logger.Printf("scylla: %s put shard %d connection total: %d missing: %d", p.address, shard, p.nrConns, p.nrShards-p.nrConns)
 		}
+		p.logger.Printf("%s: %s: %s: %s: %s: %s: %s", p.address, conn.addr, p.shardAwareAddress, p.conns[shard].addr, shard, nrShards, conn.conn)
 	}
 
 	if p.shouldCloseExcessConns() {
