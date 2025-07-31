@@ -471,7 +471,6 @@ func (p *scyllaConnPicker) Put(conn *Conn) {
 	}
 
 	if c := p.conns[shard]; c != nil {
-		p.logger.Printf("Old Conn: %s: %d/%d %s: %s: %s: %s", p.address, shard, nrShards, conn.addr, p.shardAwareAddress, p.conns[shard].addr, conn.conn)
 		if conn.addr == p.shardAwareAddress {
 			// A connection made to the shard-aware port resulted in duplicate
 			// connection to the same shard being made. Because this is never
@@ -479,8 +478,9 @@ func (p *scyllaConnPicker) Put(conn *Conn) {
 			// changes the source port along the way, therefore we can't trust
 			// the shard-aware port to return connection to the shard
 			// that we requested. Fall back to non-shard-aware port for some time.
+			p.logger.Printf("Existing Conn: %s: %d/%d %s: %s: %s: %s", p.address, shard, nrShards, conn.addr, p.shardAwareAddress, p.conns[shard].addr, conn.conn)
 			p.logger.Printf(
-				"scylla: For Shard %s:  %s connection to shard-aware address %s resulted in wrong shard being assigned; please check that you are not behind a NAT or AddressTranslater which changes source ports; falling back to non-shard-aware port for %v",
+				"scylla: For Shard %d:  %s connection to shard-aware address %s resulted in wrong shard being assigned; please check that you are not behind a NAT or AddressTranslater which changes source ports; falling back to non-shard-aware port for %v",
 				shard,
 				p.address,
 				p.shardAwareAddress,
@@ -494,6 +494,7 @@ func (p *scyllaConnPicker) Put(conn *Conn) {
 			// closed immediately
 			closeConns(conn)
 		} else {
+			p.logger.Printf("Excess Conn: %s: %d/%d %s: %s: %s: %s", p.address, shard, nrShards, conn.addr, p.shardAwareAddress, p.conns[shard].addr, conn.conn)
 			p.excessConns = append(p.excessConns, conn)
 			if gocqlDebug {
 				p.logger.Printf("scylla: %s put shard %d excess connection total: %d missing: %d excess: %d", p.address, shard, p.nrConns, p.nrShards-p.nrConns, len(p.excessConns))
