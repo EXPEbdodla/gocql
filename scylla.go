@@ -510,7 +510,7 @@ func (p *scyllaConnPicker) Put(conn *Conn) {
 			p.logger.Printf("New Conn: %s: %d/%d %s: %s: %s: %s", p.address, shard, nrShards, conn.addr, p.shardAwareAddress, p.conns[shard].addr, conn.conn)
 		} else {
 			p.logger.Printf("Wrong Conn: %s: %d/%d %s: %s: %s: %s", p.address, shard, nrShards, conn.addr, p.shardAwareAddress, nil, conn.conn)
-			closeConns(conn)
+			//closeConns(conn)
 		}
 	}
 
